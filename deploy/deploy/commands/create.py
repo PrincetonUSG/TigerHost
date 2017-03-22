@@ -35,6 +35,9 @@ def create(elastic_ip_id, email, rds_database, secret, hosted_zone_id):
         secret = _get_secret()
     if elastic_ip_id is None:
         if not settings.DEBUG:
+            # TODO: perhaps on destroy, we should free this elastic IP?
+            # However, that can be problematic if we did not actually allocate
+            # it and were given it by the user...
             echo_heading('Allocating a new Elastic IP.', marker='-', marker_color='magenta')
             client = boto3.client('ec2')
             elastic_ip_id = client.allocate_address(Domain='vpc')['AllocationId']

@@ -192,6 +192,13 @@ def ensure_executable_exists(name, get_executable):
                 echo_heading('Installing {}.'.format(name), marker='-', marker_color='magenta')
                 get_executable()
                 assert os.path.exists(path)
+
+            # Add the executable path onto $PATH so that any subprocesses,
+            # can access the executable.
+            exec_path = os.path.dirname(path)
+            if exec_path not in os.environ['PATH']:
+                os.environ['PATH'] += (os.pathsep + exec_path)
+
             return ctx.invoke(f, *args, **kwargs)
         return update_wrapper(new_func, f)
     return decorator

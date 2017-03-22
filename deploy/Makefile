@@ -1,6 +1,7 @@
 develop: install-requirements install-test-requirements
 
 install-requirements:
+	pip install "click>=6.0" # for some reason, causes dependency issues
 	pip install -e .
 
 install-test-requirements: install-requirements
